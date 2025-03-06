@@ -1,18 +1,20 @@
 package com.pedido.domain.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import java.util.List;
 
+import org.mapstruct.Mapper;
+
+import com.pedido.api.dto.PedidoItemRequestDTO;
 import com.pedido.api.dto.PedidoRequestDTO;
+import com.pedido.domain.model.PedidoItemModel;
 import com.pedido.domain.model.PedidoModel;
 
-@Mapper
+@Mapper(componentModel = "spring", uses = {PedidoItemMapper.class})
 public interface PedidoMapper {
-
-	PedidoMapper INSTANCE = Mappers.getMapper(PedidoMapper.class);
 	
 	PedidoModel toModel(PedidoRequestDTO pedidoRequestDTO);
 	
 	PedidoRequestDTO toDTO(PedidoModel pedidoModel);
 	
+	List<PedidoItemModel> mapItens(List<PedidoItemRequestDTO> itens);
 }

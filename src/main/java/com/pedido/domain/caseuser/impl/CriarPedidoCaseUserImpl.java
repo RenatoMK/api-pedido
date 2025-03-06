@@ -10,21 +10,31 @@ import com.pedido.data.repository.PedidoRepository;
 import com.pedido.domain.caseuser.CriarPedidoCaseUser;
 import com.pedido.domain.mapper.PedidoMapper;
 import com.pedido.domain.model.PedidoModel;
+import com.pedido.domain.validation.RequestValidation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor 
 public class CriarPedidoCaseUserImpl implements CriarPedidoCaseUser {
 
 	@Autowired
 	private PedidoRepository pedidoRepository;
-
+	
+	@Autowired
+	private PedidoMapper pedidoMapper;
+	
+	@Autowired
+	private RequestValidation requestValidation;
+	
 	@Override
 	public PedidoResponseDTO criarPedido(PedidoRequestDTO pedidoRequestDTO) {
 		
-		PedidoModel pedidoModel = PedidoMapper.INSTANCE.toModel(pedidoRequestDTO);
+		PedidoModel pedidoModel = pedidoMapper.toModel(pedidoRequestDTO);
+		
+		requestValidation.validaRequest(pedidoRequestDTO);
 		
 //		validarDuplicidade(pedidoRequestDTO.getPedidoId());
 //		calcularImposto(pedidoRequestDTO);

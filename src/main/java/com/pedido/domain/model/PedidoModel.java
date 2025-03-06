@@ -2,8 +2,6 @@ package com.pedido.domain.model;
 
 import java.util.List;
 
-import com.pedido.api.dto.PedidoItemRequestDTO;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +11,5 @@ public class PedidoModel {
 	
     private Long pedidoId;
     private Long clienteId;
-    private List<PedidoItemRequestDTO> itens;
+    private List<PedidoItemModel> itens;
 }
