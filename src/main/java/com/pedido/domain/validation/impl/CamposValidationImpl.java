@@ -1,17 +1,19 @@
 package com.pedido.domain.validation.impl;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import com.pedido.api.dto.PedidoItemRequestDTO;
 import com.pedido.api.dto.PedidoRequestDTO;
 import com.pedido.domain.exception.BusinessBadRequestException;
-import com.pedido.domain.validation.RequestValidation;
+import com.pedido.domain.validation.PedidoValidation;
 
 @Configuration
-public class CamposValidationImpl implements RequestValidation {
+@Primary
+public class CamposValidationImpl implements PedidoValidation {
 
 	@Override
-	public void validaRequest(PedidoRequestDTO pedidoRequestDTO) {
+	public void validaPedido(PedidoRequestDTO pedidoRequestDTO) {
 		if(pedidoRequestDTO.getClienteId() == null) {
 			throw new BusinessBadRequestException("ClienteId não pode ser null");
 		}

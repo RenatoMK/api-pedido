@@ -1,5 +1,7 @@
 package com.pedido.domain.caseuser.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +12,7 @@ import com.pedido.data.repository.PedidoRepository;
 import com.pedido.domain.caseuser.CriarPedidoCaseUser;
 import com.pedido.domain.mapper.PedidoMapper;
 import com.pedido.domain.model.PedidoModel;
-import com.pedido.domain.validation.RequestValidation;
+import com.pedido.domain.validation.PedidoValidation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,21 +29,25 @@ public class CriarPedidoCaseUserImpl implements CriarPedidoCaseUser {
 	private PedidoMapper pedidoMapper;
 	
 	@Autowired
-	private RequestValidation requestValidation;
+	private List<PedidoValidation> pedidoValidationList;
 	
 	@Override
 	public PedidoResponseDTO criarPedido(PedidoRequestDTO pedidoRequestDTO) {
 		
 		PedidoModel pedidoModel = pedidoMapper.toModel(pedidoRequestDTO);
 		
-		requestValidation.validaRequest(pedidoRequestDTO);
+		//Validações
+		for(PedidoValidation pedidoValidation : pedidoValidationList) {
+			pedidoValidation.validaPedido(pedidoRequestDTO);
+		}
+		
 		
 //		validarDuplicidade(pedidoRequestDTO.getPedidoId());
 //		calcularImposto(pedidoRequestDTO);
 		
-		PedidoEntity PedidoEntity = new PedidoEntity();
+//		PedidoEntity PedidoEntity = new PedidoEntity();
 		
-		 pedidoRepository.save(PedidoEntity);
+//		 pedidoRepository.save(PedidoEntity);
 		 PedidoResponseDTO pedidoResponseDTO = new PedidoResponseDTO();
 		 return pedidoResponseDTO;
 	}
