@@ -1,0 +1,2 @@
+insert into parametro_imposto  ( TAXA_IMPOSTO , DH_ALTERACAO , DH_INCLUSAO , DESCRICAO_IMPOSTO ) 
+values (0.3, TIMESTAMP '2023-10-10 14:30:45.123456', TIMESTAMP '2023-10-10 14:30:45.123456' , 'Imposto informado pela Receita Federal');

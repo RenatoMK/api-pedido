@@ -1,10 +1,10 @@
 package com.pedido.domain.caseuser;
 
-import com.pedido.api.dto.PedidoRequestDTO;
-import com.pedido.api.dto.PedidoResponseDTO;
+import com.pedido.api.dto.CriarPedidoItemRequestDTO;
+import com.pedido.api.dto.CriarPedidoResponseDTO;
 
 public interface CriarPedidoCaseUser {
 
-	PedidoResponseDTO criarPedido(PedidoRequestDTO pedidoRequestDTO);
+	CriarPedidoResponseDTO criarPedido(CriarPedidoItemRequestDTO criarPedidoItemRequestDTO);
 	
 }

@@ -2,16 +2,16 @@ package com.pedido.domain.caseuser.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pedido.api.dto.PedidoRequestDTO;
-import com.pedido.api.dto.PedidoResponseDTO;
-import com.pedido.data.entity.PedidoEntity;
-import com.pedido.data.repository.PedidoRepository;
+import com.pedido.api.dto.PedidoDTO;
+import com.pedido.api.dto.CriarPedidoItemRequestDTO;
+import com.pedido.api.dto.CriarPedidoResponseDTO;
+import com.pedido.data.service.CriarPedidoService;
 import com.pedido.domain.caseuser.CriarPedidoCaseUser;
-import com.pedido.domain.mapper.PedidoMapper;
+import com.pedido.domain.mapper.PedidoDomainMapper;
 import com.pedido.domain.model.PedidoModel;
+import com.pedido.domain.service.CalcularImpostoService;
 import com.pedido.domain.validation.PedidoValidation;
 
 import lombok.RequiredArgsConstructor;
@@ -19,49 +19,32 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor 
+@RequiredArgsConstructor
 public class CriarPedidoCaseUserImpl implements CriarPedidoCaseUser {
 
-	@Autowired
-	private PedidoRepository pedidoRepository;
-	
-	@Autowired
-	private PedidoMapper pedidoMapper;
-	
-	@Autowired
-	private List<PedidoValidation> pedidoValidationList;
-	
+	private final PedidoDomainMapper pedidoModelMapper;
+
+	private final List<PedidoValidation> pedidoValidationList;
+
+	private final CalcularImpostoService calcularImpostoService;
+
+	private final CriarPedidoService criarPedidoService;
+
 	@Override
-	public PedidoResponseDTO criarPedido(PedidoRequestDTO pedidoRequestDTO) {
-		
-		PedidoModel pedidoModel = pedidoMapper.toModel(pedidoRequestDTO);
-		
-		//Validações
-		for(PedidoValidation pedidoValidation : pedidoValidationList) {
-			pedidoValidation.validaPedido(pedidoRequestDTO);
+	public CriarPedidoResponseDTO criarPedido(CriarPedidoItemRequestDTO criarPedidoItemRequestDTO) {
+
+		for (PedidoValidation pedidoValidation : pedidoValidationList) {
+			pedidoValidation.validaPedido(criarPedidoItemRequestDTO);
 		}
 		
+		PedidoModel pedidoModel = pedidoModelMapper.toModel(criarPedidoItemRequestDTO);
+		pedidoModel = calcularImpostoService.calcularImposto(pedidoModel);
+		pedidoModel = criarPedidoService.criarPedido(pedidoModel);
+
+		CriarPedidoResponseDTO pedidoResponseDTO = pedidoModelMapper.toCriarPedidoDTO(pedidoModel);
 		
-//		validarDuplicidade(pedidoRequestDTO.getPedidoId());
-//		calcularImposto(pedidoRequestDTO);
-		
-//		PedidoEntity PedidoEntity = new PedidoEntity();
-		
-//		 pedidoRepository.save(PedidoEntity);
-		 PedidoResponseDTO pedidoResponseDTO = new PedidoResponseDTO();
-		 return pedidoResponseDTO;
+		log.info("Finaliza Criacao Pedido " + criarPedidoItemRequestDTO.getPedidoId());
+		return pedidoResponseDTO;
 	}
 
-//	private void validarDuplicidade(Long pedidoId) {
-//		if (pedidoRepository.existsByPedidoId(pedidoId)) {
-//			throw new IllegalArgumentException("Pedido duplicado");
-//		}
-//	}
-//
-//	private void calcularImposto(PedidoRequestDTO pedidoRequestDTO) {
-//        double valorTotal = pedidoRequestDTO.getItens().stream()
-//                .mapToDouble(item -> item.getQuantidade() * item.getValor())
-//                .sum();
-//        pedidoRequestDTO.setImposto(valorTotal * 0.3); // Feature Flag pode alterar para 0.2
-//    }
 }

@@ -7,10 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PedidoRequestDTO {
+public class PedidoDTO {
 
     private Long pedidoId;
     private Long clienteId;
-    private List<PedidoItemRequestDTO> itens;
+    private List<PedidoItemDTO> itens;
     
 }

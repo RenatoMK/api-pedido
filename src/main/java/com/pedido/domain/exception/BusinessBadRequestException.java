@@ -1,16 +1,10 @@
 package com.pedido.domain.exception;
 
-public class BusinessBadRequestException extends RuntimeException{
+public class BusinessBadRequestException extends RuntimeException {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8204896827386900923L;
-	public BusinessBadRequestException(String mensagem) {
-		super(mensagem);
-	}
 	
-	public BusinessBadRequestException(String mensagem, Throwable causa) {
+	public BusinessBadRequestException(String mensagem) {
 		super(mensagem);
 	}
 

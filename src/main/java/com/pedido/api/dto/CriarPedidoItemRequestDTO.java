@@ -5,9 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PedidoResponseDTO {
+public class CriarPedidoItemRequestDTO extends PedidoDTO{
 	
-	private Long id;
-	private String status;
-	
+
 }
